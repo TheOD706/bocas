@@ -1,5 +1,6 @@
 <?php
-	$db_param = parse_ini_file("DB.ini");
+	$db_param = parse_ini_file("DB.ini", true);
+	echo $_SERVER[HTTP_HOST];
 	$servername = $db_param["servername"];
 	$username = $db_param["username"];
 	$password = $db_param["password"];
