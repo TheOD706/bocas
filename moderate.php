@@ -21,8 +21,9 @@
 			}
 	} 
 	if($_SESSION["log"] == "log"){
-		echo "<div style='border:3px solid black;'><h2>Create DataBase</h2><form action=";
-		echo " method='post'><input type='submit' value='Create' name='action'></form></div>";
+		echo "<div style='border:3px solid black;'><h2>Create DataBase</h2><form action='";
+		echo $_SERVER["PHP_SELF"];
+		echo "' method='post'><input type='submit' value='Create' name='action'></form></div>";
 		echo "<div style='border:3px solid black;'><h2>Data Base Content</h2>";
 		echo "<div id='result' style='border:3px solid black;'><h2>Results</h2></div>";
 		echo "<div id='list' style='border:3px solid black;'><h2>Book List</h2></div>";
