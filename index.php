@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=Cp1251">
 <title>Book of complaints and suggestions</title>
 <link rel="stylesheet" type="text/css" href="./styles/main_style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
 	<div id="main_content">
@@ -34,6 +35,13 @@
 	</div>
 	<script type="text/javascript">
 		var field_sort = "";
+		var ip = "";
+
+		$(document).ready(function () {
+		    $.getJSON("http://jsonip.com/?callback=?", function (data) {
+		        ip = data.ip;
+		    });
+		});
 	
 		function addRecord(){
 			var fill = true;
@@ -52,7 +60,7 @@
 				var message = encodeURIComponent(document.getElementById("message").value);
 				var captcha = encodeURIComponent(document.getElementById("captcha_value").value);
 				var data = "field=current&name="+name+"&email="+email+"&site="+site+
-					"&message=" +message+"&captcha="+captcha;				
+					"&message=" +message+"&captcha="+captcha+"&ip="+ip;				
 				sendRequest("view_book.php", data)
 			}
 			document.getElementById("name").value = "";

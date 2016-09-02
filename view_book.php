@@ -39,8 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 			$email = urldecode($_POST["email"]);
 			$site = urldecode($_POST["site"]);
 			$message = urldecode($_POST["message"]);
-			$ip = urldecode($_SERVER["REMOTE_ADDR"]);
-			$browser = urldecode($_SERVER["HTTP_USER_AGENT"]);
+			//$ip = $_SERVER["REMOTE_ADDR"]; it don't work - show server ip
+			$ip = urldecode($_POST["ip"]);
+			$browser = $_SERVER["HTTP_USER_AGENT"];
 			$date = urldecode(date("Y-m-d H:i:s"));
 			require_once 'model_Record.php';
 			$record = new Record(0, $name, $email, $site, $message, $date, $ip, $browser);
