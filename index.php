@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=Cp1251">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Book of complaints and suggestions</title>
 <link rel="stylesheet" type="text/css" href="./styles/main_style.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
