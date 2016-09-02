@@ -71,7 +71,7 @@
 				var captcha = encodeURIComponent(document.getElementById("captcha_value").value);
 				var data = "field=current&name="+name+"&email="+email+"&site="+site+
 					"&message=" +message+"&captcha="+captcha+"&ip="+ip;				
-				sendRequest("view_book.php", data)
+				sendRequest("view_book.php", data);
 				req_param["name"] = document.getElementById("name").value;
 				req_param["email"] = document.getElementById("email").value;
 				req_param["site"] = document.getElementById("site").value;
@@ -95,11 +95,13 @@
 				if (xhttp.readyState == 4 && xhttp.status == 200) {
 					document.getElementById("result_table").innerHTML = xhttp.responseText;
 					if(document.getElementById("maxpage").innerHTML == "0"){
-						document.getElementById("fillcaptcha").innerHTML = "invalid captcha";
-						document.getElementById("name").value = req_param["name"];
-						document.getElementById("email").value = req_param["email"];
-						document.getElementById("site").value = req_param["site"];
-						document.getElementById("message").value = req_param["message"];
+						if(req_param["name"] != undefined){
+							document.getElementById("fillcaptcha").innerHTML = "invalid captcha";
+							document.getElementById("name").value = req_param["name"];
+							document.getElementById("email").value = req_param["email"];
+							document.getElementById("site").value = req_param["site"];
+							document.getElementById("message").value = req_param["message"];
+						}
 					}
 					refreshCaptcha();
 				}
