@@ -39,7 +39,7 @@ table{
 	width: 100%;
 }
 
-#fillname, #fillemail, #fillcaptcha{
+#fillname, #fillemail, #fillcaptcha, #fillsite, #fillmessage{
 	color: red;
 }
 

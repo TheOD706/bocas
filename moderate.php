@@ -11,8 +11,14 @@
 	}
 	if($_SERVER["REQUEST_METHOD"] == "POST"){
 		if($_POST["action"] == "Create"){
-			include 'create_DB_Tables.php';
-			echo "Tables created = ".$result;
+			require_once 'create_DB_Tables.php';
+			$db = new DBTableCreator();
+			echo "Tables created = ".$db->create();
+		}
+		if($_POST["action"] == "Remove"){
+			require_once 'create_DB_Tables.php';
+			$db = new DBTableCreator();
+			echo "Tables removed = ".$db->remove();
 		}
 		$moder = parse_ini_file("moderator.ini");
 		if($_POST["login"] == $moder["login"])
@@ -23,7 +29,8 @@
 	if($_SESSION["log"] == "log"){
 		echo "<div style='border:3px solid black;'><h2>Create DataBase</h2><form action='";
 		echo $_SERVER["PHP_SELF"];
-		echo "' method='post'><input type='submit' value='Create' name='action'></form></div>";
+		echo "' method='post'><input type='submit' value='Create' name='action'>";
+		echo "<input type='submit' value='Remove' name='action'></form></div>";
 		echo "<div style='border:3px solid black;'><h2>Data Base Content</h2>";
 		echo "<div id='result' style='border:3px solid black;'><h2>Results</h2></div>";
 		echo "<div id='list' style='border:3px solid black;'><h2>Book List</h2></div>";

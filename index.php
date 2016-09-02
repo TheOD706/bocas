@@ -15,11 +15,15 @@
 	</div>
 	<!-- form add -->
 	<div class="add_form"><table>
-		<tr><td>Name:</td><td><input id="name" type="text"><span id = "fillname">*</span></td></tr>
-		<tr><td>E-mail:</td><td><input id="email" type="text"><span id = "fillemail">*</span></td></tr>
-		<tr><td>Site:</td><td><input id="site" type="text"></td></tr>
-		<tr><td>Message:</td><td><textarea rows="5" cols="30" id="message"></textarea></td></tr>
-		<tr><td>Capcha:<button onclick='refreshCaptcha()'>Refresh captcha</button></td>
+		<tr><td>Name:</td><td><input id="name" type="text" onkeyup="checkLength(this)">
+		<span id = "fillname">*</span></td></tr>
+		<tr><td>E-mail:</td><td><input id="email" type="text" onkeyup="checkLength(this)">
+		<span id = "fillemail">*</span></td></tr>
+		<tr><td>Site:</td><td><input id="site" type="text" onkeyup="checkLength(this)">
+		<span id = "fillsite"></span></td></tr>
+		<tr><td>Message:</td><td><textarea rows="5" cols="30" id="message" 
+		 onkeyup="checkLength(this)"></textarea><span id = "fillmessage"></span></td></tr>
+		<tr><td>Captcha:<button onclick='refreshCaptcha()'>Refresh captcha</button></td>
 		<td><img id="captcha" alt="" src="/captcha/newCaptcha.php">
 		<input id="captcha_value" type="text"><span id = "fillcaptcha">*</span></td></tr>
 		<tr><td></td><td><button onclick="addRecord()">Add</button></td></tr>
@@ -36,6 +40,7 @@
 	<script type="text/javascript">
 		var field_sort = "";
 		var ip = "";
+		var req_param = [];
 
 		$(document).ready(function () {
 		    $.getJSON("http://jsonip.com/?callback=?", function (data) {
@@ -44,6 +49,7 @@
 		});
 	
 		function addRecord(){
+			document.getElementById("fillcaptcha").innerHTML = "*";
 			var fill = true;
 			var name = encodeURIComponent(document.getElementById("name").value);
 			var email = encodeURIComponent(document.getElementById("email").value);
@@ -55,6 +61,10 @@
 				fill = false;
 				document.getElementById("fillemail").innerHTML = "Required to fill";
 			} else {document.getElementById("fillemail").innerHTML = "*";}
+			if(!validateEmail(document.getElementById("email").value)){
+				fill = false;
+				document.getElementById("fillemail").innerHTML = "Incorect email";
+			} else {document.getElementById("fillemail").innerHTML = "*";}
 			if(fill){
 				var site = encodeURIComponent(document.getElementById("site").value);
 				var message = encodeURIComponent(document.getElementById("message").value);
@@ -62,12 +72,16 @@
 				var data = "field=current&name="+name+"&email="+email+"&site="+site+
 					"&message=" +message+"&captcha="+captcha+"&ip="+ip;				
 				sendRequest("view_book.php", data)
+				req_param["name"] = document.getElementById("name").value;
+				req_param["email"] = document.getElementById("email").value;
+				req_param["site"] = document.getElementById("site").value;
+				req_param["message"] = document.getElementById("message").value;
+				document.getElementById("name").value = "";
+				document.getElementById("email").value = "";
+				document.getElementById("site").value = "";
+				document.getElementById("message").value = "";
+				document.getElementById("captcha_value").value = "";
 			}
-			document.getElementById("name").value = "";
-			document.getElementById("email").value = "";
-			document.getElementById("site").value = "";
-			document.getElementById("message").value = "";
-			document.getElementById("captcha_value").value = "";
 		}
 
 		function showRecords(){
@@ -80,8 +94,13 @@
 			xhttp.onreadystatechange = function() {
 				if (xhttp.readyState == 4 && xhttp.status == 200) {
 					document.getElementById("result_table").innerHTML = xhttp.responseText;
-					if(document.getElementById("maxpage").innerHTML == "0")
-						document.getElementById("fillcaptcha").innerHTML = "invalid capcha";
+					if(document.getElementById("maxpage").innerHTML == "0"){
+						document.getElementById("fillcaptcha").innerHTML = "invalid captcha";
+						document.getElementById("name").value = req_param["name"];
+						document.getElementById("email").value = req_param["email"];
+						document.getElementById("site").value = req_param["site"];
+						document.getElementById("message").value = req_param["message"];
+					}
 					refreshCaptcha();
 				}
 			};
@@ -125,6 +144,30 @@
 			xhttp.open("GET", "captcha/checkCaptcha.php", true);
 			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			xhttp.send();
+		}
+
+		function validateEmail(email) {
+		    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		    return re.test(email);
+		}
+
+		function checkLength(item){
+			var id = item.id;
+			var maxl = 0;
+			switch(id){
+			case "name": maxl = 75; break;
+			case "email": maxl = 50; break;
+			case "site": maxl = 50; break;
+			case "message": maxl = 1000; break;
+			}
+			if(item.value.length > maxl){
+				document.getElementById("fill"+id).innerHTML="Value is to long. Max length is " 
+					+ maxl + ". Overwrited part will be ignored";
+				 ;
+			} else {
+				if(id=="name" || id=="email") document.getElementById("fill"+id).innerHTML="*";
+				else document.getElementById("fill"+id).innerHTML="";
+			}			
 		}
 	</script>
 </body>
