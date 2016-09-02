@@ -1,11 +1,10 @@
 <?php
 	$db_param = parse_ini_file("DB.ini", true);
-	echo $_SERVER["HTTP_HOST"];
-	echo $_SERVER["SERVER_ADDR"];
-	$servername = $db_param["servername"];
-	$username = $db_param["username"];
-	$password = $db_param["password"];
-	$dbname = $db_param["dbname"];
+	$host = $_SERVER["HTTP_HOST"];
+	$servername = $db_param[$host]["servername"];
+	$username = $db_param[$host]["username"];
+	$password = $db_param[$host]["password"];
+	$dbname = $db_param[$host]["dbname"];
 	
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
